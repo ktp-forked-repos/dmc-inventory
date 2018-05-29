@@ -52,6 +52,11 @@ class ProductType(Page):
         FieldPanel('title'),
     ]
 
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        context['subpages'] = ProductPage.objects.child_of(self).live().order_by('code')
+        return context
+
 
 class ProductPage(Page):
     parent_page_types = ['ProductType']
